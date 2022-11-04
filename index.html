@@ -1,29 +1,72 @@
 <html>
-  <head>
-    <style>
-      .fl {
-        display: flex;
-        flex-direction: column;
+<head>
+  <style>
+      .flee {
+          position: fixed;
+          bottom: 10px;
+          right: 10px;
+      }
+      main {
+          position: fixed;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+      }
+      .sites {
+          /* 6 items in a row * (116 + 20*2) = 936 */
+          max-width: 936px;
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          flex-wrap: wrap;
       }
       .item {
-        width: 50px;
-        justify-content: space-around;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          cursor: pointer;
+          user-select: none;
+          padding: 20px;
+          width: 116px;
+          height: 116px;
+       }
+      .item img {
+          user-select: none;
+          pointer-events: none;
+          width: 72px;
+          height: 72px;
+          display: block;
+          border-radius: 0.3rem;
+          margin: 8px;
       }
-    </style>
-  </head>
-  <body>
-    <div class=fl>
-      <div class=item>
-        <a href='https://www.youtube.com/redirect?q=https://kimkha.github.io/theatre/'>Go fullscreen</a>
-      </div>
-    </div>
-    <div class=fl>
-      <div class=item>
-        <a href='https://www.dailymotion.com/'>DailyMotion</a>
-      </div>
-    </div>
-    <div>
-      <a href='https://itsssl.com/JSo48'>.</a>
-    </div>
-  </body>
+      .item-name {
+          width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          text-align: center;
+          margin-top: 8px;
+      }
+  </style>
+</head>
+<body>
+<main>
+  <div class=sites>
+    <a href='https://www.youtube.com/redirect?q=https://kimkha.github.io/theatre/' class=item>
+      <img alt='f' src="https://cdn.iconscout.com/icon/premium/png-256-thumb/fullscreen-2815792-2337070.png" />
+      <div class="item-name">Go fullscreen</div>
+    </a>
+    <a href='https://www.dailymotion.com/' class=item>
+      <img alt='d' src="https://cdn.iconscout.com/icon/free/png-256/dailymotion-4670110-3878230.png" />
+      <div class="item-name">DailyMotion</div>
+    </a>
+  </div>
+</main>
+<div class="flee">
+  <a href='https://itsssl.com/JSo48'>.</a>
+</div>
+</body>
 </html>
