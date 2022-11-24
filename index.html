@@ -50,11 +50,24 @@
           text-align: center;
           margin-top: 8px;
       }
+    .custom.item {
+      width: 100%;
+      height: auto;
+      flex-direction: row;
+      cursor: unset;
+    }
+    .custom-input {
+      flex-grow: 1;
+    }
   </style>
 </head>
 <body>
 <main>
   <div class=sites>
+    <div class='item custom'>
+      <input id='customUrl' class='custom-input'/>
+      <button>Go!</button>
+    </div>
     <a href='https://www.youtube.com/redirect?q=https://kimkha.github.io/theatre/' class=item>
       <img alt='full' src="https://cdn.iconscout.com/icon/premium/png-256-thumb/fullscreen-2815792-2337070.png" />
       <div class="item-name">Go fullscreen</div>
