@@ -88,14 +88,6 @@
   function makeEpisode(data) {
     const item = newEl('a', 'videoLink', data.name);
     item.setAttribute('href', data.embed);
-    item.addEventListener('click', ({ target }) => {
-      const href = target.getAttribute('data-href');
-      if (href) {
-        playMovie(href);
-      } else {
-        alert(`not found ${href}`);
-      }
-    });
     return item;
   }
   
