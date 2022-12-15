@@ -148,6 +148,12 @@
   }
   
   function init() {
+    playerEl.width =
+        (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
+        - 16;
+    playerEl.height =
+        (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)
+        - 16;
     try {
       const code = getCookie('encryptedCode');
       if (code) {
