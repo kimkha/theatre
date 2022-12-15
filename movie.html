@@ -33,18 +33,11 @@
 <main>
   <input id="code" />
   <div id=gated>
-    <iframe id=player width="640" height="360" frameborder="0" src="" allowfullscreen allow="autoplay;"></iframe>
-    <details open>
-      <summary>More movies</summary>
-      <div id=list></div>
-    </details>
   </div>
- <a href="javascript:window.location.reload()">Reload</a>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-  const listEl = document.getElementById('list');
-  const playerEl = document.getElementById('player');
+  const listEl = document.getElementById('gated');
   
   function newEl(tag, className, text) {
     const el = document.createElement(tag);
@@ -67,6 +60,7 @@
   
   function makeMovie(data) {
     const details = newEl('details');
+    details.setAttribute('open', 'open');
     const summary = newEl('summary', '', data.movie);
     details.appendChild(summary);
     
@@ -92,8 +86,8 @@
   }
   
   function makeEpisode(data) {
-    const item = newEl('span', 'videoLink', data.name);
-    item.setAttribute('data-href', data.embed);
+    const item = newEl('a', 'videoLink', data.name);
+    item.setAttribute('href', data.embed);
     item.addEventListener('click', ({ target }) => {
       const href = target.getAttribute('data-href');
       if (href) {
@@ -103,10 +97,6 @@
       }
     });
     return item;
-  }
-  
-  function playMovie(href) {
-    playerEl.setAttribute('src', href);
   }
   
   function setCookie(name,value,days) {
@@ -149,12 +139,6 @@
   }
   
   function init() {
-    playerEl.width =
-        (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
-        - 16;
-    playerEl.height =
-        (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)
-        - 16;
     try {
       const code = getCookie('encryptedCode');
       if (code) {
