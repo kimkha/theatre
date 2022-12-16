@@ -27,6 +27,9 @@
     border-radius: 16px;
     background: orange;
   }
+  .activeLink {
+    background: blue;
+  }
 </style>
 </head>
 <body>
@@ -94,19 +97,30 @@
   function makeEpisode(data) {
     const item = newEl('span', 'videoLink', data.name);
     item.setAttribute('data-href', data.embed);
-    item.addEventListener('click', ({ target }) => {
-      const href = target.getAttribute('data-href');
-      if (href) {
-        playMovie(href);
-      } else {
-        alert(`not found ${href}`);
-      }
-    });
+    item.addEventListener('click', ({ target }) => playMovie(target));
     return item;
   }
   
-  function playMovie(href) {
-    playerEl.setAttribute('src', href);
+  function playMovie(target) {
+    document.querySelectorAll('.activeLink').forEach(item => item.classList.remove('activeLink'));
+    const href = target.getAttribute('data-href');
+    target.classList.add('activeLink');
+    if (href) {
+      playerEl.setAttribute('src', href);
+    } else {
+      alert(`not found ${href}`);
+    }
+  }
+  
+  function goNext(isNext) {
+    const curr = document.querySelector('.activeLink');
+    if (!curr) return;
+    const next = isNext ? curr.nextElementSibling : curr.previousElementSibling;
+    if (next) {
+      playMovie(next);
+    } else {
+      alert('no more');
+    }
   }
   
   function setCookie(name,value,days) {
@@ -149,12 +163,12 @@
   }
   
   function init() {
-    playerEl.width =
-        (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth)
-        - 16;
-    playerEl.height =
-        (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight)
-        - 16;
+    playerEl.width = (window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth) - 16;
+    playerEl.height = (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 16;
+    document.body.addEventListener('keydown', event => {
+      event.keyCode === 37 && goNext(false);
+      event.keyCode === 39 && goNext(true);
+    });
     try {
       const code = getCookie('encryptedCode');
       if (code) {
