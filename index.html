@@ -88,7 +88,7 @@
       <img alt='canva' src="https://cdn.iconscout.com/icon/free/png-256/canva-3823975-3175197.png" />
       <div class="item-name">Canva</div>
     </a>
-    <a href='/maze.html' class=item>
+    <a href='javascript:openMaze();' class=item>
       <img alt='maze' src="https://cdn.iconscout.com/icon/free/png-512/block-maze-1128083.png" />
       <div class="item-name">Maze game</div>
     </a>
@@ -140,6 +140,9 @@
 <script>
   function openMovie() {
     window.location.href = './movie.html?u=' + new Date();
+  }
+  function openMaze() {
+    window.location.href = './maze.html?u=' + new Date();
   }
   function handleClick() {
     let url = customInput.value;
