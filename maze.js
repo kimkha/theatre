@@ -228,14 +228,18 @@ class GamePlay {
   #setLevel(level) {
     switch (level) {
       case 'easy':
-        this.width = Math.floor((this.maxWidth - 10) / 3) + 10;
-        this.height = Math.floor((this.maxHeight - 10) / 3) + 10;
+        this.width = Math.floor((this.maxWidth - 10) / 4) + 10;
+        this.height = Math.floor((this.maxHeight - 10) / 4) + 10;
         break;
       case 'medium':
-        this.width = Math.floor((this.maxWidth - 10) / 3 * 2) + 10;
-        this.height = Math.floor((this.maxHeight - 10) / 3 * 2) + 10;
+        this.width = Math.floor((this.maxWidth - 10) / 2) + 10;
+        this.height = Math.floor((this.maxHeight - 10) / 2) + 10;
         break;
       case 'hard':
+        this.width = Math.floor((this.maxWidth - 10) / 4 * 3) + 10;
+        this.height = Math.floor((this.maxHeight - 10) / 4 * 3) + 10;
+        break;
+      case 'expert':
         this.width = this.maxWidth;
         this.height = this.maxHeight;
         break;
@@ -346,6 +350,7 @@ class GameControl {
     document.getElementById('easyBtn').addEventListener('click', () => this.#chooseLevel('easy'));
     document.getElementById('mediumBtn').addEventListener('click', () => this.#chooseLevel('medium'));
     document.getElementById('hardBtn').addEventListener('click', () => this.#chooseLevel('hard'));
+    document.getElementById('expertBtn').addEventListener('click', () => this.#chooseLevel('expert'));
   }
 
   #chooseLevel(level) {
