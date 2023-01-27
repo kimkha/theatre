@@ -170,7 +170,7 @@ class DisplayNode {
 }
 
 class GamePlay {
-  cellSize = 20; // in pixels
+  cellSize = 40; // in pixels
   renderedCells = [];
   startPos;
   current;
@@ -228,20 +228,22 @@ class GamePlay {
   #setLevel(level) {
     switch (level) {
       case 'easy':
-        this.width = Math.floor((this.maxWidth - 10) / 4) + 10;
-        this.height = Math.floor((this.maxHeight - 10) / 4) + 10;
-        break;
-      case 'medium':
         this.width = Math.floor((this.maxWidth - 10) / 2) + 10;
         this.height = Math.floor((this.maxHeight - 10) / 2) + 10;
         break;
-      case 'hard':
-        this.width = Math.floor((this.maxWidth - 10) / 4 * 3) + 10;
-        this.height = Math.floor((this.maxHeight - 10) / 4 * 3) + 10;
-        break;
-      case 'expert':
+      case 'medium':
         this.width = this.maxWidth;
         this.height = this.maxHeight;
+        break;
+      case 'hard':
+        this.cellSize = 30;
+        this.width = Math.floor(this.maxWidth * 40 / this.cellSize);
+        this.height = Math.floor(this.maxHeight * 40 / this.cellSize);
+        break;
+      case 'expert':
+        this.cellSize = 20;
+        this.width = Math.floor(this.maxWidth * 40 / this.cellSize);
+        this.height = Math.floor(this.maxHeight * 40 / this.cellSize);
         break;
       default:
         this.width = 10;
