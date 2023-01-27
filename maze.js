@@ -170,7 +170,6 @@ class DisplayNode {
 }
 
 class GamePlay {
-  cellSize = 40; // in pixels
   renderedCells = [];
   startPos;
   current;
@@ -180,11 +179,8 @@ class GamePlay {
     this.onSuccess = onSuccess;
     this.gameUi = document.getElementById('app');
     const options = document.querySelector('.options');
-    const innerWidth = window.innerWidth - 50;
-    const innerHeight = window.innerHeight - 50 - options.offsetHeight;
-    const offsetCellSize = this.cellSize + 2; // border = 1
-    this.maxWidth = Math.floor(innerWidth / offsetCellSize);
-    this.maxHeight = Math.floor(innerHeight / offsetCellSize);
+    this.innerWidth = window.innerWidth - 50;
+    this.innerHeight = window.innerHeight - 50 - options.offsetHeight;
   }
 
   start(level) {
@@ -226,30 +222,28 @@ class GamePlay {
   }
 
   #setLevel(level) {
+    const maxCellSize = Math.min(Math.floor(this.innerWidth / 10), Math.floor(this.innerHeight / 10));
+    const minCellSize = 20;
+    const step = Math.floor((maxCellSize - minCellSize) / 8);
+    let cellSize = maxCellSize;
     switch (level) {
       case 'easy':
-        this.width = Math.floor((this.maxWidth - 10) / 2) + 10;
-        this.height = Math.floor((this.maxHeight - 10) / 2) + 10;
+        cellSize -= step * 3;
         break;
       case 'medium':
-        this.width = this.maxWidth;
-        this.height = this.maxHeight;
+        cellSize -= step * 5;
         break;
       case 'hard':
-        this.cellSize = 30;
-        this.width = Math.floor(this.maxWidth * 40 / this.cellSize);
-        this.height = Math.floor(this.maxHeight * 40 / this.cellSize);
+        cellSize -= step * 7;
         break;
       case 'expert':
-        this.cellSize = 20;
-        this.width = Math.floor(this.maxWidth * 40 / this.cellSize);
-        this.height = Math.floor(this.maxHeight * 40 / this.cellSize);
-        break;
-      default:
-        this.width = 10;
-        this.height = 10;
+        cellSize -= step * 8;
         break;
     }
+    this.cellSize = cellSize;
+    const offsetCellSize = cellSize + 2; // border = 1
+    this.width = Math.floor(this.innerWidth / offsetCellSize);
+    this.height = Math.floor(this.innerHeight / offsetCellSize);
   }
 
   #generate() {
