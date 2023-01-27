@@ -6,6 +6,16 @@
     <style>
         body {
             font-family: sans-serif;
+            font-size: 28px;
+        }
+        .hidden {
+            display: none;
+        }
+        .clickable {
+            cursor: pointer;
+        }
+        .clickable:hover {
+            text-decoration: underline;
         }
         .game {
             padding: 20px;
@@ -13,6 +23,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+        }
+        .options {
+            padding-bottom: 20px;
         }
         .row {
             display: flex;
@@ -75,11 +88,95 @@
         .right-border {
             border-right-color: #000;
         }
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+        }
+        .popupContent {
+            position: absolute;
+            top: calc(50% - 100px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .popup .head {
+            font-size: 72px;
+            background-color: #CA4246;
+            background-image: linear-gradient(
+                    45deg,
+                    #CA4246 16.666%,
+                    #E16541 16.666%,
+                    #E16541 33.333%,
+                    #F18F43 33.333%,
+                    #F18F43 50%,
+                    #8B9862 50%,
+                    #8B9862 66.666%,
+                    #476098 66.666%,
+                    #476098 83.333%,
+                    #A7489B 83.333%);
+            background-size: 100%;
+            background-repeat: repeat;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: move-animation 5s infinite ease;
+        }
+        @keyframes move-animation {
+            0% {
+                background-size: 100%;
+            }
+            20% {
+                background-size: 100%;
+            }
+            25% {
+                background-size: 650%;
+            }
+            30% {
+                background-size: 100%;
+            }
+            100% {
+                background-size: 100%;
+            }
+        }
+        .popup .actions {
+            border-radius: 20px;
+            border: 2px solid #CA4246;
+            width: fit-content;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .popup .item {
+            padding: 20px;
+            color: #CA4246;
+        }
     </style>
 </head>
 <body>
 
-<div id="app" class="game"></div>
+<div class="game">
+    <div class="options">
+        <span id="optionBtn" class="clickable">Options</span>
+    </div>
+    <div id="app"></div>
+</div>
+<div id="popup" class="popup hidden">
+    <div class="popupContent">
+        <h1 class="head hidden" id="success">Hooray! You did it!</h1>
+        <div class="actions">
+            <div class="item">
+                <span id="entryBtn" class="clickable">Entry</span>
+                <span id="easyBtn" class="clickable">Easy</span>
+                <span id="mediumBtn" class="clickable">Medium</span>
+                <span id="hardBtn" class="clickable">Hard</span>
+            </div>
+            <div class="item clickable" id="resetBtn">Reset game</div>
+        </div>
+    </div>
+</div>
 
 <script src="./maze.js"></script>
 </body>

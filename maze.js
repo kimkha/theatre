@@ -49,7 +49,11 @@ class MazeData {
     return result;
   }
 
-  fastTrack(prevPos, currPos) {
+  fastTrack(prevPos, currPos, finishPos) {
+    if (currPos.x === finishPos.x && currPos.y === finishPos.y) {
+      // Found the destination, hooray!
+      return [currPos];
+    }
     const walkable = this.findWalkableNodes(currPos.x, currPos.y).filter(pos => pos.x !== prevPos.x || pos.y !== prevPos.y);
     if (walkable.length !== 1) {
       // Maybe the end of block or may need to choose next
@@ -57,7 +61,7 @@ class MazeData {
     } else {
       // Only one node next
       const nextPos = walkable[0];
-      const stack = this.fastTrack(currPos, nextPos);
+      const stack = this.fastTrack(currPos, nextPos, finishPos);
       stack.unshift(currPos);
       return stack;
     }
@@ -168,26 +172,39 @@ class DisplayNode {
 class GamePlay {
   cellSize = 20; // in pixels
   renderedCells = [];
+  startPos;
   current;
   walkables = [];
 
-  constructor() {
-    const innerWidth = window.innerWidth - 50;
-    const innerHeight = window.innerHeight - 50;
-    const offsetCellSize = this.cellSize + 2; // border = 1
-    this.width = Math.floor(innerWidth / offsetCellSize);
-    this.height = Math.floor(innerHeight / offsetCellSize);
-
+  constructor(onSuccess) {
+    this.onSuccess = onSuccess;
     this.gameUi = document.getElementById('app');
+    const options = document.querySelector('.options');
+    const innerWidth = window.innerWidth - 50;
+    const innerHeight = window.innerHeight - 50 - options.offsetHeight;
+    const offsetCellSize = this.cellSize + 2; // border = 1
+    this.maxWidth = Math.floor(innerWidth / offsetCellSize);
+    this.maxHeight = Math.floor(innerHeight / offsetCellSize);
   }
 
-  start() {
+  start(level) {
+    this.#setLevel(level);
     this.#generate();
     this.#showMaze();
 
-    const { x, y } = this.#randomStartPoint();
-    this.#markCurrent(x, y);
-    this.#markFinish(this.width - 1 - x, this.height - 1 - y);
+    this.startPos = this.#randomStartPoint();
+    this.#unmarkCurrent();
+    this.#markCurrent(this.startPos.x, this.startPos.y);
+    this.finishPos = {
+      x: this.width - 1 - this.startPos.x,
+      y: this.height - 1 - this.startPos.y,
+    };
+    this.#markFinish(this.finishPos.x, this.finishPos.y);
+  }
+
+  reset() {
+    this.#unmarkCurrent();
+    this.#markCurrent(this.startPos.x, this.startPos.y);
   }
 
   #randomStartPoint() {
@@ -195,7 +212,7 @@ class GamePlay {
     const secondHalf = Math.floor(this.height / 2);
     const max = firstHalf + secondHalf;
     const num = Math.floor(Math.random() * max);
-    if (num <= firstHalf) {
+    if (num < firstHalf) {
       return {
         x: 0,
         y: num,
@@ -205,6 +222,27 @@ class GamePlay {
         x: num - firstHalf,
         y: 0,
       };
+    }
+  }
+
+  #setLevel(level) {
+    switch (level) {
+      case 'easy':
+        this.width = Math.floor((this.maxWidth - 10) / 3) + 10;
+        this.height = Math.floor((this.maxHeight - 10) / 3) + 10;
+        break;
+      case 'medium':
+        this.width = Math.floor((this.maxWidth - 10) / 3 * 2) + 10;
+        this.height = Math.floor((this.maxHeight - 10) / 3 * 2) + 10;
+        break;
+      case 'hard':
+        this.width = this.maxWidth;
+        this.height = this.maxHeight;
+        break;
+      default:
+        this.width = 10;
+        this.height = 10;
+        break;
     }
   }
 
@@ -218,6 +256,11 @@ class GamePlay {
   }
 
   #showMaze() {
+    while (this.gameUi.firstChild) {
+      this.gameUi.removeChild(this.gameUi.firstChild);
+    }
+    this.renderedCells = [];
+
     const nodes = this.maze.toDisplayNodes();
     for (let y = 0; y < nodes.length; y++) {
       const row = nodes[y];
@@ -238,7 +281,7 @@ class GamePlay {
     if (!nextPos) {
       return;
     }
-    const stack = this.maze.fastTrack(this.current, nextPos);
+    const stack = this.maze.fastTrack(this.current, nextPos, this.finishPos);
     this.#unmarkCurrent();
     stack.forEach((pos, index) => {
       const node = this.#getRenderedCell(pos.x, pos.y);
@@ -249,6 +292,9 @@ class GamePlay {
     setTimeout(() => {
       this.#markCurrent(end.x, end.y);
       stack.forEach(pos => this.#getRenderedCell(pos.x, pos.y).classList.remove('step'));
+      if (end.x === this.finishPos.x && end.y === this.finishPos.y) {
+        this.onSuccess();
+      }
     }, 100 * stack.length);
   }
 
@@ -278,6 +324,54 @@ class GamePlay {
   }
 }
 
+class GameControl {
+  constructor() {
+    this.popup = document.getElementById('popup');
+    this.success = document.getElementById('success');
+    this.game = new GamePlay(() => this.#showPopup(true));
+    this.game.start();
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    document.getElementById('optionBtn').addEventListener('click', () => this.#showPopup(false));
+    this.popup.addEventListener('click', ({target}) => {
+      if (target === this.popup) {
+        this.#hidePopup();
+      }
+    });
+    document.getElementById('resetBtn').addEventListener('click', () => this.#reset());
+
+    document.getElementById('entryBtn').addEventListener('click', () => this.#chooseLevel('entry'));
+    document.getElementById('easyBtn').addEventListener('click', () => this.#chooseLevel('easy'));
+    document.getElementById('mediumBtn').addEventListener('click', () => this.#chooseLevel('medium'));
+    document.getElementById('hardBtn').addEventListener('click', () => this.#chooseLevel('hard'));
+  }
+
+  #chooseLevel(level) {
+    this.level = level;
+    this.game.start(this.level);
+    this.#hidePopup();
+  }
+
+  #showPopup(isSuccess) {
+    if (isSuccess) {
+      this.success.classList.remove('hidden');
+    }
+    this.popup.classList.remove('hidden');
+  }
+
+  #hidePopup() {
+    this.popup.classList.add('hidden');
+    this.success.classList.add('hidden');
+  }
+
+  #reset() {
+    this.game.reset();
+    this.#hidePopup();
+  }
+}
+
 function createEl(tagName, className) {
   const el = document.createElement(tagName);
   if (className) {
@@ -286,8 +380,4 @@ function createEl(tagName, className) {
   return el;
 }
 
-function newGame() {
-  new GamePlay().start();
-}
-
-newGame();
+new GameControl();
