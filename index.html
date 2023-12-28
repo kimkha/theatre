@@ -80,92 +80,115 @@
       <input type='url' id='customUrl' placeholder='URL or Keyword'/>
       <button id='customBtn'>Open the page!</button>
     </div>
-    <a href='https://www.youtube.com/redirect?q=https://kimkha.github.io/theatre/' class=item>
-      <img alt='full' src="https://cdn.iconscout.com/icon/premium/png-256-thumb/fullscreen-2815792-2337070.png" />
-      <div class="item-name">Go fullscreen</div>
-    </a>
-    <a href='https://www.canva.com/' class=item>
-      <img alt='canva' src="https://cdn.iconscout.com/icon/free/png-256/canva-3823975-3175197.png" />
-      <div class="item-name">Canva</div>
-    </a>
-    <a href='javascript:openMaze();' class=item>
-      <img alt='maze' src="https://cdn.iconscout.com/icon/free/png-256/block-maze-1128083.png" />
-      <div class="item-name">Maze game</div>
-    </a>
-    <a href='https://play.prodigygame.com/' class=item>
-      <img alt='ted' src="https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/8ebacb559a8de57ed1add28b57170cae" />
-      <div class="item-name">Prodigy</div>
-    </a>
-    <a href='https://app.readingeggs.com/' class=item>
-      <img alt='ted' src="https://www.thechildrensbookreview.com/wp-content/uploads/2020/11/Reading-Eggs_LOGO_770x495-640x411.png" />
-      <div class="item-name">Reading Eggs</div>
-    </a>
-    <a href='https://zoom.us/j/' class=item>
-      <img alt='zoom' src="https://cdn.iconscout.com/icon/free/png-256/zoom-2752011-2284828.png" />
-      <div class="item-name">Join Zoom</div>
-    </a>
-    <a href='https://www.youtube.com/redirect?q=https://play.stan.com.au/' class=item>
-      <img alt='ted' src="https://blog.marginmedia.com.au/hs-fs/hub/92872/file-2568963790-png/images/stan-main-logo.png" />
-      <div class="item-name">Stan.</div>
-    </a>
-    <a href='https://www.youtube.com/redirect?q=https://www.primevideo.com/' class=item>
-      <img alt='ted' src="https://cdn.iconscout.com/icon/free/png-256/free-amazon-prime-video-9132362-7417253.png" />
-      <div class="item-name">Amazon Prime</div>
-    </a>
-    <a href='https://www.youtube.com/redirect?q=https://www.ted.com/' class=item>
-      <img alt='ted' src="https://cdn.iconscout.com/icon/free/png-256/ted-13-461831.png" />
-      <div class="item-name">TED</div>
-    </a>
-    <a href='https://www.youtube.com/redirect?q=https://www.dailymotion.com/' class=item>
-      <img alt='d' src="https://cdn.iconscout.com/icon/free/png-256/dailymotion-4670110-3878230.png" />
-      <div class="item-name">DailyMotion</div>
-    </a>
-    <a href='https://www.youtube.com/redirect?q=https://app.plex.tv/' class=item>
-      <img alt='plex' src="https://cdn.iconscout.com/icon/free/png-256/plex-226049.png" />
-      <div class="item-name">PlexTV</div>
-    </a>
-    <a href='https://www.youtube.com/redirect?q=https://tubitv.com/' class=item>
-      <img alt='tubi' src="http://cdn.adrise.tv/tubitv-assets/img/tubitv_square.jpg" />
-      <div class="item-name">TubiTV</div>
-    </a>
-    <a href='https://abetterrouteplanner.com/' class=item>
-      <img alt='abrp' src="https://is4-ssl.mzstatic.com/image/thumb/Purple125/v4/2c/00/81/2c0081db-d8ae-485f-4f9d-0f9ac4f17210/source/1200x1200bb.png" />
-      <div class="item-name">ABetterRoutePlan</div>
-    </a>
-    <a href='https://www.duckduckgo.com/' class=item>
-      <img alt='duck' src="https://cdn.iconscout.com/icon/free/png-256/duckduckgo-2752202-2285019.png" />
-      <div class="item-name">DuckDuckGo</div>
-    </a>
-    <a href='https://www.reddit.com/' class=item>
-      <img alt='red' src="https://cdn.iconscout.com/icon/free/png-256/reddit-36-189728.png" />
-      <div class="item-name">Reddit</div>
-    </a>
-    <a href='https://www.youtube.com/redirect?q=https://www.sbs.com.au/ondemand/' class=item>
-      <img alt='sbs' src="https://image.winudf.com/v2/image1/Y29tLnNicy5vbmRlbWFuZC5hbmRyb2lkX2ljb25fMTU1NTQ4MzkzNV8wMzI/icon.png?fakeurl=1" />
-      <div class="item-name">SBS</div>
-    </a>
-    <a href='https://www.youtube.com/redirect?q=https://iview.abc.net.au/' class=item>
-      <img alt='sbs' src="https://static.wikia.nocookie.net/logopedia/images/3/3c/ABCTV_2014-blue.svg" />
-      <div class="item-name">ABC</div>
-    </a>
-    <a href='https://toiletmap.gov.au/' class=item>
-      <img alt='t' src="https://cdn.iconscout.com/icon/free/png-512/free-toilet-73-459355.png" />
-      <div class="item-name">Toilet Map</div>
-    </a>
-    <a href='javascript:openMovie();' class=item>
-      <img alt='film' src="https://cdn.iconscout.com/icon/free/png-256/film-1769162-1505229.png" />
-      <div class="item-name">List film</div>
-    </a>
+<script>
+  const items = [{
+    href: 'https://www.youtube.com/redirect?q=https://kimkha.github.io/theatre/',
+    img: 'https://cdn.iconscout.com/icon/premium/png-256-thumb/fullscreen-2815792-2337070.png',
+    label: 'Go fullscreen',
+    alt: 'full',
+  }, {
+    href: 'https://www.canva.com',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/canva-3823975-3175197.png',
+    label: 'Canva',
+    alt: 'canva',
+  }, {
+    href: 'javascript:openMaze();',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/block-maze-1128083.png',
+    label: 'Maze game',
+    alt: 'maze',
+  }, {
+    href: 'https://play.prodigygame.com',
+    img: 'https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/8ebacb559a8de57ed1add28b57170cae',
+    label: 'Prodigy',
+    alt: 'prodigy',
+  }, {
+    href: 'https://app.readingeggs.com',
+    img: 'https://www.thechildrensbookreview.com/wp-content/uploads/2020/11/Reading-Eggs_LOGO_770x495-640x411.png',
+    label: 'Reading Eggs',
+    alt: 'eggs',
+  }, {
+    href: 'https://zoom.us/j/',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/zoom-2752011-2284828.png',
+    label: 'Join Zoom',
+    alt: 'zoom',
+  }, {
+    href: 'https://www.youtube.com/redirect?q=https://play.stan.com.au',
+    img: 'https://blog.marginmedia.com.au/hs-fs/hub/92872/file-2568963790-png/images/stan-main-logo.png',
+    label: 'Stan.',
+    alt: 'stan',
+  }, {
+    href: 'https://www.youtube.com/redirect?q=https://www.primevideo.com',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/free-amazon-prime-video-9132362-7417253.png',
+    label: 'Amazon Prime',
+    alt: 'prime',
+  }, {
+    href: 'https://www.youtube.com/redirect?q=https://www.ted.com/',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/ted-13-461831.png',
+    label: 'TED',
+    alt: 'ted',
+  }, {
+    href: 'https://www.youtube.com/redirect?q=https://www.dailymotion.com',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/dailymotion-4670110-3878230.png',
+    label: 'DailyMotion',
+    alt: 'd',
+  }, {
+    href: 'https://www.youtube.com/redirect?q=https://app.plex.tv',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/plex-226049.png',
+    label: 'PlexTV',
+    alt: 'plex',
+  }, {
+    href: 'https://www.youtube.com/redirect?q=https://tubitv.com',
+    img: 'http://cdn.adrise.tv/tubitv-assets/img/tubitv_square.jpg',
+    label: 'TubiTV',
+    alt: 'tubi',
+  }, {
+    href: 'https://abetterrouteplanner.com/',
+    img: 'https://is4-ssl.mzstatic.com/image/thumb/Purple125/v4/2c/00/81/2c0081db-d8ae-485f-4f9d-0f9ac4f17210/source/1200x1200bb.png',
+    label: 'ABetterRoutePlanner',
+    alt: 'abrp',
+  }, {
+    href: 'https://www.duckduckgo.com',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/duckduckgo-2752202-2285019.png',
+    label: 'DuckDuckGo',
+    alt: 'duck',
+  }, {
+    href: 'https://www.reddit.com',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/reddit-36-189728.png',
+    label: 'Reddit',
+    alt: 'red',
+  }, {
+    href: 'https://www.youtube.com/redirect?q=https://www.sbs.com.au/ondemand',
+    img: 'https://image.winudf.com/v2/image1/Y29tLnNicy5vbmRlbWFuZC5hbmRyb2lkX2ljb25fMTU1NTQ4MzkzNV8wMzI/icon.png?fakeurl=1',
+    label: 'SBS',
+    alt: 'sbs',
+  }, {
+    href: 'https://www.youtube.com/redirect?q=https://iview.abc.net.au',
+    img: 'https://static.wikia.nocookie.net/logopedia/images/3/3c/ABCTV_2014-blue.svg',
+    label: 'ABC',
+    alt: 'abc',
+  }, {
+    href: 'https://toiletmap.gov.au',
+    img: 'https://cdn.iconscout.com/icon/free/png-512/free-toilet-73-459355.png',
+    label: 'Toilet Map',
+    alt: 'toilet',
+  }, {
+    href: 'javascript:openMovie();',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/film-1769162-1505229.png',
+    label: 'List film',
+    alt: 'film',
+  }];
+  document.write(items.map(item => `<a href='${item.href}' class='item'><img alt='${item.alt}' src='${item.img}'/><div class='item-name'>${item.label}</div></a>`).join(''));
+</script>
   </div>
 </main>
 <div class="flee">
 </div>
 <script>
   function openMovie() {
-    window.location.href = './movie.html?u=' + new Date();
+    window.location.href = './movie.html?u=' + Date.now();
   }
   function openMaze() {
-    window.location.href = './maze.html?u=' + new Date();
+    window.location.href = './maze.html?u=' + Date.now();
   }
   function handleClick() {
     let url = customInput.value;
