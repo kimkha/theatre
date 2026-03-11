@@ -97,6 +97,11 @@
     label: 'Maze game',
     alt: 'maze',
   }, {
+    href: 'javascript:openCoganh();',
+    img: 'https://cdn.iconscout.com/icon/free/png-256/grid-icon-3094658.png',
+    label: 'Cờ gánh',
+    alt: 'ganh',
+  }, {
     href: 'https://play.prodigygame.com',
     img: 'https://d2q79iu7y748jz.cloudfront.net/s/_squarelogo/8ebacb559a8de57ed1add28b57170cae',
     label: 'Prodigy',
@@ -214,6 +219,9 @@
   }
   function openMaze() {
     window.location.href = './maze.html?u=' + Date.now();
+  }
+  function openCoGanh() {
+    window.location.href = './co-ganh-board.html?u=' + Date.now();
   }
   function handleClick() {
     let url = customInput.value;
