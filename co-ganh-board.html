@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cờ Gánh - Vietnamese Ganh Chess</title>
+  <style>
+    /* ===== Cờ Gánh Board Styles ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f5f5f5;
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 1rem;
+    }
+
+    /* Title */
+    h1 {
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      margin-bottom: 1rem;
+      color: #333;
+      text-align: center;
+    }
+
+    /* Board container: square aspect ratio, responsive sizing */
+    .board-container {
+      width: min(100vw - 2rem, 800px);
+      max-width: 800px;
+      aspect-ratio: 1;
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* SVG fills container, preserves aspect ratio */
+    .board-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Controls: turn indicator + buttons */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .controls-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+    .turn-indicator {
+      font-size: 1.25rem;
+      font-weight: 600;
+      min-height: 1.5rem;
+    }
+    .turn-indicator.red { color: #c62828; }
+    .turn-indicator.blue { color: #1565c0; }
+    .controls button {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .controls button:hover {
+      background: #f0f0f0;
+    }
+
+    /* Clickable intersection cells */
+    .cell {
+      cursor: pointer;
+      transition: filter 0.15s ease;
+      fill: #c6c6c6;
+      stroke: transparent;
+      stroke-width: 3;
+    }
+    .cell:hover { filter: brightness(0.9); }
+    .cell.selected { stroke: #f9a825; stroke-width: 0.5; }
+    .cell.valid-dest { stroke: #2e7d32; stroke-width: 0.5; }
+    .cell.piece-red { fill: #c62828; }
+    .cell.piece-blue { fill: #1565c0; }
+
+    /* Game over overlay */
+    .board-wrapper {
+      position: relative;
+      width: min(100vw - 2rem, 800px);
+      aspect-ratio: 1;
+    }
+    .game-over-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.9);
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      z-index: 10;
+    }
+    .game-over-overlay.visible {
+      display: flex;
+    }
+    .game-over-overlay .message {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cờ Gánh (Vietnamese Ganh Chess) - 5×5 intersections</h1>
+  <div class="controls">
+    <span class="turn-indicator blue" id="turnIndicator">Blue turn</span>
+    <div class="controls-buttons">
+      <button type="button" id="resetBtn">Reset</button>
+      <button type="button" id="modeBtn">2 players</button>
+    </div>
+  </div>
+  <div class="board-wrapper">
+    <div class="board-container">
+    <svg class="board-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <!--
+        Cờ Gánh Board - 5×5 grid of intersection points
+        Coordinates: (0,0) top-left to (4,4) bottom-right
+        Grid mapping: padding=10, cellSize=20 → point (x,y) at (10+20x, 10+20y)
+      -->
+
+      <defs>
+        <!-- Reusable line style -->
+        <style>
+          .board-line { stroke: black; stroke-width: 0.7; fill: none; }
+          .intersection-dot { fill: #444; }
+        </style>
+      </defs>
+
+      <!-- ===== HORIZONTAL LINES: connect points in same row ===== -->
+      <!-- Row 0: (0,0)-(1,0)-(2,0)-(3,0)-(4,0) -->
+      <line class="board-line" x1="10" y1="10" x2="90" y2="10" />
+      <!-- Row 1 -->
+      <line class="board-line" x1="10" y1="30" x2="90" y2="30" />
+      <!-- Row 2 -->
+      <line class="board-line" x1="10" y1="50" x2="90" y2="50" />
+      <!-- Row 3 -->
+      <line class="board-line" x1="10" y1="70" x2="90" y2="70" />
+      <!-- Row 4 -->
+      <line class="board-line" x1="10" y1="90" x2="90" y2="90" />
+
+      <!-- ===== VERTICAL LINES: connect points in same column ===== -->
+      <!-- Col 0 -->
+      <line class="board-line" x1="10" y1="10" x2="10" y2="90" />
+      <!-- Col 1 -->
+      <line class="board-line" x1="30" y1="10" x2="30" y2="90" />
+      <!-- Col 2 -->
+      <line class="board-line" x1="50" y1="10" x2="50" y2="90" />
+      <!-- Col 3 -->
+      <line class="board-line" x1="70" y1="10" x2="70" y2="90" />
+      <!-- Col 4 -->
+      <line class="board-line" x1="90" y1="10" x2="90" y2="90" />
+
+      <!-- ===== MAIN DIAGONALS (\): (x,y) to (x+2,y+2) for (0,0),(0,2),(2,0),(2,2) ===== -->
+      <!-- (0,0) to (2,2) -->
+      <line class="board-line" x1="10" y1="10" x2="50" y2="50" />
+      <!-- (0,2) to (2,4) -->
+      <line class="board-line" x1="10" y1="50" x2="50" y2="90" />
+      <!-- (2,0) to (4,2) -->
+      <line class="board-line" x1="50" y1="10" x2="90" y2="50" />
+      <!-- (2,2) to (4,4) -->
+      <line class="board-line" x1="50" y1="50" x2="90" y2="90" />
+
+      <!-- ===== ANTI-DIAGONALS (/): (x,y) to (x+2,y-2) for (0,2),(0,4),(2,2),(2,4) ===== -->
+      <!-- (0,2) to (2,0) -->
+      <line class="board-line" x1="10" y1="50" x2="50" y2="10" />
+      <!-- (0,4) to (2,2) -->
+      <line class="board-line" x1="10" y1="90" x2="50" y2="50" />
+      <!-- (2,2) to (4,0) -->
+      <line class="board-line" x1="50" y1="50" x2="90" y2="10" />
+      <!-- (2,4) to (4,2) -->
+      <line class="board-line" x1="50" y1="90" x2="90" y2="50" />
+
+      <!-- ===== CELLS: 25 clickable intersections, rendered by JS ===== -->
+      <g id="cells"></g>
+    </svg>
+  </div>
+  <div class="game-over-overlay" id="gameOverOverlay">
+    <span class="message" id="gameOverMessage"></span>
+  </div>
+  </div>
+
+  <script src="co-ganh-game.js"></script>
+</body>
+</html>
